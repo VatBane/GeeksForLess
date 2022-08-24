@@ -16,9 +16,9 @@ public class Calculator {
             if (!Validator.brackets(expr) || !Validator.operationsNumber(expr) || !Validator.operationsOrder(expr) || Validator.operationBeforeExpr(expr))
                 throw new IllegalArgumentException("Expression is wrong!!!");
 
+            // solving brackets
             int start = 0;
             int[] brCount = {0, 0};
-
             for (int i = 0; i < expr.length(); i++) {
                 if (expr.charAt(i) == '(') {
                     brCount[0]++;
@@ -35,8 +35,8 @@ public class Calculator {
                 }
             }
 
+            // filling numbers and opers arrays
             int regime = 0;
-
             for (int i = 0; i < expr.length(); i++) {
                 if (regime == 0) {
                     if (digits.contains(expr.charAt(i))) {
@@ -75,43 +75,51 @@ public class Calculator {
 //                numbers.add(Float.parseFloat(buf.toString()));
             }
 
+            // check first negative
             if (opers.size() == numbers.size()) {
                 numbers.set(0, numbers.get(0) * -1);
                 opers.remove(0);
             }
 
-            while (true) {
-                if (opers.contains("*-")) {
-                    numbers.set(opers.indexOf("*-") + 1, (numbers.get(opers.indexOf("*-")) + 1) * -1);
-                    opers.set(opers.indexOf("*-"), "*");
-                } else if (opers.contains("/-")) {
-                    numbers.set(opers.indexOf("/-") + 1, (numbers.get(opers.indexOf("/-")) + 1) * -1);
-                    opers.set(opers.indexOf("/-"), "/");
-                } else if (opers.contains("+-")) {
-                    numbers.set(opers.indexOf("+-") + 1, (numbers.get(opers.indexOf("+-")) + 1) * -1);
-                    opers.set(opers.indexOf("+-"), "+");
-                } else if (opers.contains("--")) {
-                    numbers.set(opers.indexOf("--") + 1, (numbers.get(opers.indexOf("--")) + 1) * -1);
-                    opers.set(opers.indexOf("--"), "-");
-                } else {
-                    break;
-                }
-            }
+            // simplify operations
+//            while (true) {
+//                if (opers.contains("*-")) {
+//                    numbers.set(opers.indexOf("*-") + 1, (numbers.get(opers.indexOf("*-")) + 1) * -1);
+//                    opers.set(opers.indexOf("*-"), "*");
+//                } else if (opers.contains("/-")) {
+//                    numbers.set(opers.indexOf("/-") + 1, (numbers.get(opers.indexOf("/-")) + 1) * -1);
+//                    opers.set(opers.indexOf("/-"), "/");
+//                } else if (opers.contains("+-")) {
+//                    numbers.set(opers.indexOf("+-") + 1, (numbers.get(opers.indexOf("+-")) + 1) * -1);
+//                    opers.set(opers.indexOf("+-"), "+");
+//                } else if (opers.contains("--")) {
+//                    numbers.set(opers.indexOf("--") + 1, (numbers.get(opers.indexOf("--")) + 1) * -1);
+//                    opers.set(opers.indexOf("--"), "-");
+//                } else {
+//                    break;
+//                }
+//            }
 
+
+            // solving
             while (opers.size() > 0) {
-                if (opers.contains("*") || opers.contains("/")) {
+                if (opers.contains("*") || opers.contains("/") || opers.contains("*-") || opers.contains("/-")) {
+                    simplifyFirst(numbers, opers);
                     for (int i = 0; i < opers.size(); i++) {
                         if (opers.get(i).equals("*")) {
-                            numbers.set(opers.indexOf("*"), (numbers.get(opers.indexOf("*")) * (numbers.get(opers.indexOf("*") + 1))));
-                            numbers.remove(opers.indexOf("*") + 1);
-                            opers.remove("*");
+                            numbers.set(i, (numbers.get(i) * (numbers.get(i + 1))));
+                            numbers.remove(i + 1);
+                            opers.remove(i);
+                            i--;
                         } else if (opers.get(i).equals("/")) {
-                            numbers.set(opers.indexOf("/"), (numbers.get(opers.indexOf("/")) / (numbers.get(opers.indexOf("/") + 1))));
-                            numbers.remove(opers.indexOf("/") + 1);
-                            opers.remove("/");
+                            numbers.set(i, (numbers.get(i) / (numbers.get(i + 1))));
+                            numbers.remove(i + 1);
+                            opers.remove(i);
+                            i--;
                         }
                     }
                 } else {
+                    simplify(numbers, opers);
                     if (opers.get(0).equals("+")) {
                         numbers.set(0, numbers.get(0) + numbers.get(1));
                     } else {
@@ -122,13 +130,40 @@ public class Calculator {
                 }
             }
 
-            System.out.println((float) Math.round(numbers.get(0) * 100)/100);
+            System.out.println((float) Math.round(numbers.get(0) * 100) / 100);
 
-            return (float) Math.round(numbers.get(0) * 100)/100;
+            return (float) Math.round(numbers.get(0) * 100) / 100;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         return 0f;
+    }
+
+    private void simplify(List<Float> nums, List<String> opers) {
+        while (true) {
+            if (opers.contains("+-")) {
+                nums.set(opers.indexOf("+-") + 1, (nums.get(opers.indexOf("+-") + 1)) * -1);
+                opers.set(opers.indexOf("+-"), "+");
+            } else if (opers.contains("--")) {
+                nums.set(opers.indexOf("--") + 1, (nums.get(opers.indexOf("--") + 1)) * -1);
+                opers.set(opers.indexOf("--"), "-");
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void simplifyFirst(List<Float> nums, List<String> opers) {
+        while (true) {
+            if (opers.contains("*-")) {
+                nums.set(opers.indexOf("*-") + 1, (nums.get(opers.indexOf("*-") + 1)) * -1);
+                opers.set(opers.indexOf("*-"), "*");
+            } else if (opers.contains("/-")) {
+                nums.set(opers.indexOf("/-") + 1, (nums.get(opers.indexOf("/-") + 1)) * -1);
+                opers.set(opers.indexOf("/-"), "/");
+            } else
+                break;
+        }
     }
 }

@@ -26,6 +26,16 @@ public class CalculatorTest {
     }
 
     @Test
+    public void doubleMinus() {
+        Assertions.assertEquals(23, calculator.solve("8+2--9*1+8/2"));
+    }
+
+    @Test
+    public void multyMinus() {
+        Assertions.assertEquals(-17, calculator.solve("8*-2-1"));
+    }
+
+    @Test
     public void simpleInt() {
         Assertions.assertEquals(5, calculator.solve("8+2-9*1+8/2"));
     }
@@ -34,5 +44,16 @@ public class CalculatorTest {
     public void simpleFloat() {
         Assertions.assertEquals(-3.04f, calculator.solve("1.1*2.3/0.5-1*8.1"));
     }
+
+    @Test
+    public void manyMultiplyDivision() {
+        Assertions.assertEquals(186.67f, calculator.solve("2*5*7/3*8"));
+    }
+
+    @Test
+    public void hardInt() {
+        Assertions.assertEquals(7, calculator.solve("3+4-(4-5)+-1"));
+    }
+
 
 }
