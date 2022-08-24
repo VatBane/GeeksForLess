@@ -59,4 +59,18 @@ public class Validator {
     private static boolean checkOrder(char[] buffer) {
         return buffer[1] == '-';
     }
+
+    public static boolean operationBeforeExpr(String expr) {
+        return (symbols.contains(expr.charAt(0)) && expr.charAt(0) != '-');
+    }
+
+    public static boolean onlyDigits(String expr) {
+        for (int i = 0; i < expr.length(); i++) {
+            if (Character.isAlphabetic(expr.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

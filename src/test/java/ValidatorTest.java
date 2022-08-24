@@ -30,4 +30,14 @@ public class ValidatorTest {
     public void orderFalse() {
         Assertions.assertFalse(Validator.operationsOrder("-+"));
     }
+
+    @Test
+    public void operationBeforeExpr() {
+        Assertions.assertTrue(Validator.operationBeforeExpr("+1"));
+    }
+
+    @Test
+    public void hasNotDigits() {
+        Assertions.assertFalse(Validator.onlyDigits("asd"));
+    }
 }

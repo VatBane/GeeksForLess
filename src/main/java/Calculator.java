@@ -3,8 +3,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Calculator {
-    private Set<Character> digits = Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',');
-    private Set<Character> operations = Set.of('+', '*', '/', '-');
+    private final Set<Character> digits = Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',');
+    private final Set<Character> operations = Set.of('+', '*', '/', '-');
 
     public float solve(String expr) {
         try {
@@ -13,8 +13,8 @@ public class Calculator {
             StringBuilder buf = new StringBuilder("");
             System.out.println(expr);
 
-            if (!Validator.brackets(expr) || !Validator.operationsNumber(expr) || !Validator.operationsOrder(expr))
-                throw new Exception("Expression is wrong!!!");
+            if (!Validator.brackets(expr) || !Validator.operationsNumber(expr) || !Validator.operationsOrder(expr) || Validator.operationBeforeExpr(expr))
+                throw new IllegalArgumentException("Expression is wrong!!!");
 
             int start = 0;
             int[] brCount = {0, 0};
@@ -121,9 +121,9 @@ public class Calculator {
                 }
             }
 
-            System.out.println(numbers.get(0));
+            System.out.println((float) Math.round(numbers.get(0) * 100)/100);
 
-            return numbers.get(0);
+            return (float) Math.round(numbers.get(0) * 100)/100;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
