@@ -99,14 +99,18 @@ public class Calculator {
             }
 
             while (opers.size() > 0) {
-                if (opers.contains("*")) {
-                    numbers.set(opers.indexOf("*"), (numbers.get(opers.indexOf("*")) * (numbers.get(opers.indexOf("*") + 1))));
-                    numbers.remove(opers.indexOf("*") + 1);
-                    opers.remove("*");
-                } else if (opers.contains("/")) {
-                    numbers.set(opers.indexOf("/"), (numbers.get(opers.indexOf("/")) / (numbers.get(opers.indexOf("/") + 1))));
-                    numbers.remove(opers.indexOf("/") + 1);
-                    opers.remove("/");
+                if (opers.contains("*") || opers.contains("/")) {
+                    for (int i = 0; i < opers.size(); i++) {
+                        if (opers.get(i).equals("*")) {
+                            numbers.set(opers.indexOf("*"), (numbers.get(opers.indexOf("*")) * (numbers.get(opers.indexOf("*") + 1))));
+                            numbers.remove(opers.indexOf("*") + 1);
+                            opers.remove("*");
+                        } else if (opers.get(i).equals("/")) {
+                            numbers.set(opers.indexOf("/"), (numbers.get(opers.indexOf("/")) / (numbers.get(opers.indexOf("/") + 1))));
+                            numbers.remove(opers.indexOf("/") + 1);
+                            opers.remove("/");
+                        }
+                    }
                 } else {
                     if (opers.get(0).equals("+")) {
                         numbers.set(0, numbers.get(0) + numbers.get(1));
@@ -115,9 +119,6 @@ public class Calculator {
                     }
                     numbers.remove(1);
                     opers.remove(0);
-//                    numbers.set(opers.indexOf("+"), (numbers.get(opers.indexOf("+")) + (numbers.get(opers.indexOf("+") + 1))));
-//                    numbers.remove(opers.indexOf("+") + 1);
-//                    opers.remove("+");
                 }
             }
 
