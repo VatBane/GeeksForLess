@@ -31,7 +31,7 @@ public class CalculatorTest {
     }
 
     @Test
-    public void multyMinus() {
+    public void multiMinus() {
         Assertions.assertEquals(-17, calculator.solve("8*-2-1"));
     }
 
@@ -55,5 +55,8 @@ public class CalculatorTest {
         Assertions.assertEquals(7, calculator.solve("3+4-(4-5)+-1"));
     }
 
-
+    @Test
+    public void hardFloat() {
+        Assertions.assertEquals(9.49f, calculator.solve("4+(1.8/2--(8/3.5-6.7))+9"));
+    }
 }

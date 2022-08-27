@@ -119,7 +119,7 @@ public class Calculator {
                         }
                     }
                 } else {
-                    simplify(numbers, opers);
+                    simplifyLast(numbers, opers);
                     if (opers.get(0).equals("+")) {
                         numbers.set(0, numbers.get(0) + numbers.get(1));
                     } else {
@@ -140,7 +140,7 @@ public class Calculator {
         return 0f;
     }
 
-    private void simplify(List<Float> nums, List<String> opers) {
+    private void simplifyLast(List<Float> nums, List<String> opers) {
         while (true) {
             if (opers.contains("+-")) {
                 nums.set(opers.indexOf("+-") + 1, (nums.get(opers.indexOf("+-") + 1)) * -1);
